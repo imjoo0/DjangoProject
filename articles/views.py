@@ -1,3 +1,4 @@
+from importlib.metadata import requires
 from django.shortcuts import render,redirect
 from .models import Article
 import random
@@ -5,7 +6,7 @@ import random
 def index(request):
     return render(request,'index.html')
 
-def dinner(request,name):
+def dinner(request):
     menus = [
         {'name':'족발', 'price':30000},
         {'name':'치킨', 'price':40000},
@@ -17,7 +18,6 @@ def dinner(request,name):
 
     context = {
         'pick':pick,
-        'name':name,
         'menus':menus,
         'articles':articles,
     }
@@ -32,4 +32,32 @@ def create_review(request):
     article = Article(title=title,content=content)
     article.save()
 
-    return redirect('/articles/dinner/무언가/')
+    return redirect('articles:detail',article.pk)
+
+def detail(request,pk):
+    article = Article.objects.get(pk=pk)
+    context = {
+        'article':article,
+    }
+    return render(request,'detail.html',context)
+
+def delete(request,pk):
+    article = Article.objects.get(pk=pk)
+    if request.method == "POST": 
+        article.delete()
+    return redirect('articles:dinner')
+
+def edit(request,pk):
+    article = Article.objects.get(pk=pk)
+    context={
+        'article':article,
+    }
+    return render(request,'edit.html',context)
+
+def update(request,pk):
+    article = Article.objects.get(pk=pk)
+    article.title = request.POST.get('title')
+    article.content = request.POST.get('content')
+    article.save()
+
+    return redirect('articles:detail',article.pk)

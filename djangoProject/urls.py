@@ -19,6 +19,6 @@ from articles import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('artilces/',include('articles.urls')),
+    path('articles/',include('articles.urls')),
     path('foods/',include('articles.urls')),
 ]
