@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+<form 
+    action={% url 'articles:create_review' %} 
+    method="POST"
+>
+    {% csrf_token %}
+    <label for="title">Title:</label>
+    <input class="form-control" type="text" id="title" name="title"></input>
+    <label for="content">Content:</label>
+    <textarea class="form-control" type="text" id="content" name="content" cols="30" rows="5"></textarea></br>
+    <input type="submit">리뷰 전송</input>
+</form>
+
+{% block content %}
+
+{% endblock %}
